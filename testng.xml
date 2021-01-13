@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TestSuite" verbose="1">
+
+    <test name="apiTest">
+        <packages>
+            <package name="com.springboot.smartspace.*"></package>
+        </packages>
+    </test>
+    <listeners>
+        <!--testng的XML配置文件中添加这些内容-->
+    </listeners>
+
+</suite>

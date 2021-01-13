@@ -1,0 +1,173 @@
+http:
+  max-total: 10
+  connect-timeout: 10000
+  connection-requests-timeout: 10000
+  socket-timeout: 10000
+  validate-after-inactivity: 10000
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/friend_platform?useUnicode=true&characterEncoding=utf8&serverTimezone=CTT&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+global-config:
+  url_beta: https://gateway-beta.mingwork.com
+
+
+token:
+  url: https://gateway-beta.mingwork.com/auth/oauth/token
+  username: 214823551327973::dingb625cb941fe828d935c2f4657eb6378f
+  password: 214823551327973::dingb625cb941fe828d935c2f4657eb6378f
+  scope: server
+  grant_type: password
+  content_type: application/x-www-form-urlencoded
+  authorization: Basic bWVldGluZy13ZWI6bWVldGluZy13ZWI=
+
+testcase:
+  list:
+    - name: addBuild
+      url: ${global-config.url_beta}/meet/meeting-room/location/save
+      method: post
+      body: '{
+                 "cityName": "成都",
+                 "labelNature": "build",
+                 "labelValue": "描述",
+                 "name": "传奇大厦",
+                 "parentId": -1,
+                 "scene": "meeting_room_location"
+             }'
+      description: "添加建筑"
+
+    - name: addFloor
+      url: ${global-config.url_beta}/meet/meeting-room/location/save
+      method: post
+      body: '{
+                 "labelNature": "floor",
+                 "name": "4F",
+                 "parentId": ${createBuildLabelId},
+                 "scene": "meeting_room_location"
+             }'
+      description: "添加楼层/createBuildLabelId：添加建筑后的labelId"
+
+    - name: addMeetingRoom
+      url: ${global-config.url_beta}/meet/meeting-room/save
+      method: post
+      body: '{
+                 "name": "智能会议室",
+                 "locationId": ${createFloorLabelId},
+                 "capacityNum": 10,
+                 "equipFacilityId": "",
+                 "meetingRoomDeviceParamModel": {
+                     "deviceSnList": []
+                 },
+                 "deviceSnList": []
+             }'
+      description: "添加会议室/createFloorLabelId：添加楼层后的labelId"
+
+    - name: updateMeetingRoom
+      url: ${global-config.url_beta}/meet/meeting-room/update
+      method: post
+      body: '{
+                 "name": "607",
+                 "locationId": ${createFloorLabelId},
+                 "capacityNum": 10,
+                 "meetingRoomId": ${createMeetingRoomId}
+             }'
+      description: "修改会议室/createFloorLabelId：添加楼层后的labelId/createMeetingRoomId：添加会议室后的labelId"
+
+    - name: getMeetingRoomList
+      url: ${global-config.url_beta}/meet/meeting-room/list
+      method: post
+      body: "{}"
+      description: "获取会议室列表"
+
+    - name: deleteMeetingRoom
+      url: ${global-config.url_beta}/meet/meeting-room/remove/${meetingRoomId}
+      method: get
+      body:
+      description: "删除会议室/meetingRoomId从会议室列表接口获取"
+
+    - name: getMeetingRoomLocation
+      url: ${global-config.url_beta}/meet/meeting-room/meetingRoomLocation/tree
+      method: get
+      body:
+      description: "获取会议室地理位置标签"
+
+    - name: deleteCity
+      url: ${global-config.url_beta}/meet/meeting-room/location/remove
+      method: get
+      body:
+      descripton: "删除城市"
+
+    - name: addSchedule
+      url: ${global-config.url_beta}/meet/schedule/addSchedule
+      method: appPost
+      body: '{
+               "title":"用例评审会议",
+               "location":{
+               	"latitude":"10",
+               	"locationName":"",
+               	"longitude":"10"
+               },
+               "remark":"评审",
+               "startTime":"2020-04-09 19:30:00",
+               "endTime":"2020-04-09 20:30:00",
+               "scheduleType":"common",
+               "participatorList":[
+               	{
+                     "userId": "214823551327973",
+                     "username": "郭青",
+                     "headUrl": "",
+                     "platform": "dingtalk"
+                 },
+                 {
+                   "userId":"1220474643696062",
+                   "username":"叶琴",
+                   "headUrl":"",
+                   "platform":"dingtalk"
+                 },
+                 {
+                   "userId":"2866151654752072",
+                   "username":"小号",
+                   "headUrl":"",
+                   "platform":"dingtalk"
+                 }
+               ],
+               "repeatable":0,
+               "recurrenceModel":{
+                 "model":"no_repeat",
+                 "weekDayList":[],
+                 "terminateTime":"",
+                 "forever":""
+               },
+               "meetingWayModel":{
+                   "model":"zoom"
+               }
+             }'
+
+    - name: deleteSchedule
+      url: ${global-config.url_beta}/meet/schedule/deleteSchedule
+      method: appPost
+      body: '{"scheduleId":${6784},"identify":"major","deleteModel":"only"}'
+
+    - name: getScheduleDetail
+      url: ${global-config.url_beta}/meet/schedule/getScheduleDetail
+      method: appPost
+      body: '{"id":1720}'
+
+    - name: getUserScheduleInTime
+      url: ${global-config.url_beta}/meet/schedule/getUserScheduleInTime
+      method: appPost
+      body: '{"startTime":"2020-01-01 00:00:00","endTime":"2025-12-30 23:59:59","userIds":["${054352343335238956}","${2866151654752072}"]}'
+
+
+
+    - name: getMeeting
+      url: ${global-config.url_beta}/admin/label/tree?scene=meeting_room_location
+
+      method:
+      body:
+server:
+  port: 8080
