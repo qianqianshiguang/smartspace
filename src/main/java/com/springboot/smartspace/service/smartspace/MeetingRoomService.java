@@ -5,13 +5,10 @@ import com.springboot.smartspace.entity.Case;
 import com.springboot.smartspace.utils.HttpUtils;
 import com.springboot.smartspace.utils.ReadYmlUtils;
 import com.springboot.smartspace.utils.ReplaceUtils;
-import org.apache.http.NameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.List;
 
 /**
  * @author: gq
@@ -29,12 +26,13 @@ public class MeetingRoomService {
 
     /**
      * 添加建筑
-     * 
+     *
      * @return
      * @throws IOException
      */
-    public JSONObject addBuild(Case testcase) throws IOException {
-        JSONObject jsonObject =httpUtils.postParamsByJson(testcase.getUrl(), testcase.getBody());
+    public JSONObject addBuild(Case testcase) {
+
+        JSONObject jsonObject = httpUtils.post(testcase, testcase.getBody());
 //        System.out.println(jsonObject);
         return jsonObject;
 
@@ -46,9 +44,9 @@ public class MeetingRoomService {
      * @return
      * @throws IOException
      */
-    public JSONObject addFloor(Case testcase, String newBody) throws IOException {
+    public JSONObject addFloor(Case testcase, String newBody) {
 
-        JSONObject jsonObject = httpUtils.postParamsByJson(testcase.getUrl(), newBody);
+        JSONObject jsonObject = httpUtils.post(testcase, newBody);
         return jsonObject;
     }
 
@@ -58,9 +56,9 @@ public class MeetingRoomService {
      * @return
      * @throws IOException
      */
-    public JSONObject addMeetingRoom(Case testcase, String newBody) throws IOException {
+    public JSONObject addMeetingRoom(Case testcase, String newBody) {
 
-        JSONObject jsonObject = httpUtils.postParamsByJson(testcase.getUrl(), newBody);
+        JSONObject jsonObject = httpUtils.post(testcase, newBody);
         return jsonObject;
     }
 
@@ -70,9 +68,9 @@ public class MeetingRoomService {
      * @return
      * @throws IOException
      */
-    public JSONObject updateMeetingRoom(Case testcase, String newBody) throws IOException {
+    public JSONObject updateMeetingRoom(Case testcase, String newBody) {
 
-        JSONObject jsonObject = httpUtils.postParamsByJson(testcase.getUrl(), newBody);
+        JSONObject jsonObject = httpUtils.post(testcase, newBody);
         System.out.println(jsonObject);
         return jsonObject;
     }
@@ -83,7 +81,7 @@ public class MeetingRoomService {
      * @return
      */
     public JSONObject getMeetingRoomList(Case testcase) {
-        JSONObject jsonObject = httpUtils.postParamsByJson(testcase.getUrl(), testcase.getBody());
+        JSONObject jsonObject = httpUtils.post(testcase, testcase.getBody());
         System.out.println(jsonObject);
         return jsonObject;
     }
@@ -112,8 +110,9 @@ public class MeetingRoomService {
     /**
      * 删除城市
      */
-    public JSONObject deleteCity(Case testcase, List<NameValuePair> params) throws URISyntaxException {
-        JSONObject jsonObject = httpUtils.getParams(testcase.getUrl(),params);
+    public JSONObject deleteCity(Case testcase, String params) {
+        JSONObject jsonObject = httpUtils.get(testcase, params);
         return jsonObject;
     }
+
 }

@@ -26,10 +26,27 @@ token:
   authorization: Basic bWVldGluZy13ZWI6bWVldGluZy13ZWI=
 
 testcase:
+  header:
+    REQ_HEADER_TYPE_NAME: Content-Type
+    REQ_HEADER_TYPE_VALUE_JSON: application/json
+    REQ_HEADER_TYPE_VALUE_FORM: application/x-www-form-urlencoded
+    REQ_HEADER_AUTHORIZATION_NAME: Authorization
+    REQ_HEADER_AUTHORIZATION_TOKEN_VALUE: Basic bWVldGluZy13ZWI6bWVldGluZy13ZWI=
   list:
+    - name: gettoken
+      url: ${global-config.url_beta}/auth/oauth/token
+      method: post
+      type: application/x-www-form-urlencoded
+      body: '{
+                  "username": "214823551327973::dingb625cb941fe828d935c2f4657eb6378f",
+                  "password": "214823551327973::dingb625cb941fe828d935c2f4657eb6378f",
+                  "scope": "server",
+                  "grant_type": "password",
+              }'
     - name: addBuild
       url: ${global-config.url_beta}/meet/meeting-room/location/save
       method: post
+      type: application/json
       body: '{
                  "cityName": "成都",
                  "labelNature": "build",
@@ -43,6 +60,7 @@ testcase:
     - name: addFloor
       url: ${global-config.url_beta}/meet/meeting-room/location/save
       method: post
+      type: application/json
       body: '{
                  "labelNature": "floor",
                  "name": "4F",
@@ -54,6 +72,7 @@ testcase:
     - name: addMeetingRoom
       url: ${global-config.url_beta}/meet/meeting-room/save
       method: post
+      type: application/json
       body: '{
                  "name": "智能会议室",
                  "locationId": ${createFloorLabelId},
@@ -69,22 +88,24 @@ testcase:
     - name: updateMeetingRoom
       url: ${global-config.url_beta}/meet/meeting-room/update
       method: post
+      type: application/json
       body: '{
                  "name": "607",
-                 "locationId": ${createFloorLabelId},
+                 "locationId": "${createFloorLabelId}",
                  "capacityNum": 10,
-                 "meetingRoomId": ${createMeetingRoomId}
+                 "meetingRoomId": "${createMeetingRoomId}"
              }'
       description: "修改会议室/createFloorLabelId：添加楼层后的labelId/createMeetingRoomId：添加会议室后的labelId"
 
     - name: getMeetingRoomList
       url: ${global-config.url_beta}/meet/meeting-room/list
       method: post
+      type: application/json
       body: "{}"
       description: "获取会议室列表"
 
     - name: deleteMeetingRoom
-      url: ${global-config.url_beta}/meet/meeting-room/remove/${meetingRoomId}
+      url: ${global-config.url_beta}/meet/meeting-room/remove/
       method: get
       body:
       description: "删除会议室/meetingRoomId从会议室列表接口获取"
@@ -92,7 +113,6 @@ testcase:
     - name: getMeetingRoomLocation
       url: ${global-config.url_beta}/meet/meeting-room/meetingRoomLocation/tree
       method: get
-      body:
       description: "获取会议室地理位置标签"
 
     - name: deleteCity

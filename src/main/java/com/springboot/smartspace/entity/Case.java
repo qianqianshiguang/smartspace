@@ -12,14 +12,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class Case {
 
+    //自定义的接口名称，通过此名称获取测试数据
     private String name;
 
+    //接口url
     private String url;
 
+    //接口方法
     private String method;
 
+    //传参格式
+    private String type;
+
+    //请求体
     private String body;
 
+    //接口描述
     private String description;
 
 
